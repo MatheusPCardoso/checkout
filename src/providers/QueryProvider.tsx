@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+/* import { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 export const QueryProvider = ({ children }: { children: ReactNode }) => {
@@ -7,3 +7,4 @@ export const QueryProvider = ({ children }: { children: ReactNode }) => {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
+ */
