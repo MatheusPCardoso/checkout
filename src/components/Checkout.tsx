@@ -141,7 +141,7 @@ const IdentificationPage = ({
       <div className="w-full flex justify-end">
         <button
           type="submit"
-          className="bg-teal-500 text-white py-2 px-6 rounded text-[12px] flex gap-1 items-center justify-center"
+          className="bg-teal-500 text-white py-2 px-6 rounded text-[12px] flex gap-1 items-center justify-center w-full xl:w-[unset]"
         >
           Avançar
           <MdChevronRight size={16} />
@@ -241,7 +241,7 @@ const AddressPage = ({
         </button>
         <button
           type="submit"
-          className="bg-teal-500 text-white py-2 px-6 rounded text-[12px] flex gap-1 items-center justify-center"
+          className="bg-teal-500 text-white py-2 px-6 rounded text-[12px] flex gap-1 items-center justify-center w-full xl:w-[unset]"
         >
           Avançar
           <MdChevronRight size={16} />
@@ -377,7 +377,7 @@ const PaymentPage = ({
           </button>
           <button
             type="submit"
-            className="bg-teal-500 text-white py-2 px-6 rounded text-[12px] flex gap-1 items-center justify-center"
+            className="bg-teal-500 text-white py-2 px-6 rounded text-[12px] flex gap-1 items-center justify-center w-full xl:w-[unset]"
           >
             Avançar
             <MdChevronRight size={16} />
