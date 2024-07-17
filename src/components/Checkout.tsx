@@ -191,7 +191,7 @@ const AddressPage = ({
       <InputThemed
         register={register}
         name={"cep"}
-        mask={"9999-999"}
+        mask={"99999-999"}
         validations={{ required: "Campo obrigatório" }}
         label="CEP"
         defaultValue={checkoutValues?.cep}
@@ -255,7 +255,8 @@ const PaymentPage = ({
   setPage,
   setCheckoutValues,
   checkoutValues,
-}: PageProps) => {
+  amount,
+}: PageProps & { amount: number | undefined }) => {
   const [focused, setFocused] = useState<Focused>("name");
   const [cardValues, setCardValues] = useState({
     number: "",
@@ -348,8 +349,23 @@ const PaymentPage = ({
           reset={reset}
           placeholder="parcelas"
           label="Pagamento"
-          value={{ label: "1x de R$ 29,99", value: "adada" }}
-          options={[{ label: "1x de R$ 29,99", value: "adada" }]}
+          // feito assim pra facilitar parcelamentos futuros
+          value={{
+            label: `1x de ${((amount || 0) / 100).toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}`,
+            value: "poggers",
+          }}
+          options={[
+            {
+              label: `1x de ${((amount || 0) / 100).toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}`,
+              value: "poggers",
+            },
+          ]}
         />
         <div className="w-full flex justify-end gap-6">
           <button
@@ -467,7 +483,13 @@ const ResumePage = ({
       </div>
       <button className="bg-teal-500 text-white p-3 rounded">
         Confirmar -
-        <span className="font-bold">{` R$${(amount || 0) / 100}`}</span>
+        <span className="font-bold">
+          {" " +
+            ((amount || 0) / 100).toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
+        </span>
       </button>
     </div>
   );
@@ -526,6 +548,7 @@ export const Checkout = ({ amount }: { amount: number | undefined }) => {
           setPage={setPage}
           checkoutValues={checkoutValues}
           setCheckoutValues={setCheckoutValues}
+          amount={amount}
         />
       ),
       itemName: "Pagamento",
@@ -544,8 +567,8 @@ export const Checkout = ({ amount }: { amount: number | undefined }) => {
     },
   ];
   return (
-    <div className="bg-white px-4 py-6 rounded shadow-lg min-w-[620px]">
-      <div className="flex justify-between mb-10 border-solid border-teal-500 border-[1px] p-4 rounded text-white">
+    <div className="bg-white px-4 py-6 rounded shadow-lg xl:min-w-[620px]">
+      <div className="xl:flex hidden justify-between mb-10 border-solid border-teal-500 border-[1px] p-4 rounded text-white">
         {pages.map((item, index) => (
           <div
             key={item.itemName}

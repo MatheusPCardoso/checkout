@@ -18,26 +18,29 @@ export default async function Home({
 
       return response.json();
     })
-    .catch(() => {
+    .catch((error) => {
       redirect("/error");
     });
 
   return (
     <main>
       <div className="w-full min-w-full flex items-center justify-center">
-        <div className="p-16 flex items-center justify-center flex-col">
+        <div className="pt-16 px-6 xl:p-16 flex items-center justify-center flex-col w-full xl:w-[unset]">
           <div className="relative w-[80px] h-[80px] text-center flex items-center justify-center">
             <Image src="/logo.png" fill alt="logo" />
           </div>
-          <div className="flex gap-10 mt-10">
+          <div className="flex flex-col w-full xl:flex-row gap-10 mt-10">
             <Checkout amount={data.amount} />
             <PaymentData data={data} />
           </div>
         </div>
       </div>
-      <div className="w-full flex gap-6 justify-center text-teal-500 text-[16px]">
+      <div className="w-full flex gap-6 justify-center text-teal-500 text-[16px] py-8 xl:py-0">
         <div className="flex gap-3">
-          <Link href="https://www.instagram.com/jibotapp" className="text-gray-600">
+          <Link
+            href="https://www.instagram.com/jibotapp"
+            className="text-gray-600"
+          >
             @JibotApp
           </Link>
         </div>

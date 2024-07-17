@@ -22,7 +22,12 @@ export const PaymentData = ({ data }: PaymentDataProps) => {
         </div>
         <div className="flex justify-between mt-8 w-full">
           <p className="text-teal-600">Valor:</p>
-          <p className="text-black font-bold">{`R$ ${data.amount / 100}`}</p>
+          <p className="text-black font-bold">
+            {(data.amount / 100).toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
+          </p>
         </div>
       </div>
     </div>
