@@ -1,0 +1,17 @@
+services:
+  checkout:
+    image: t-checkout-qa:latest
+    container_name: checkout_container_qa
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - checkout-network
+
+networks:
+  checkout-network:
+    name: nginx-proxy-manager_default
+    external: true

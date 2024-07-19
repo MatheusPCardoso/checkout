@@ -1,0 +1,40 @@
+name: checkout ci
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  deploy_dev:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Hostinger Deploy
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ".,!.env,"
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.REMOTE_PORT }}
+          target: ${{ secrets.TARGET }}
+            
+      
+      - name: Build docker
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.REMOTE_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /system/dev/checkout
+            docker stop 'checkout_container_qa'
+            docker rm 'checkout_container_qa'
+            docker rmi $(docker images --filter=reference='t-checkout-qa' -q)
+            docker compose up -d
