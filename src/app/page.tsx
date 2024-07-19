@@ -4,24 +4,15 @@ import { GoShieldCheck } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
 import { PaymentData } from "@/components/PaymentData";
-import { apiUrl } from "@/api/apiURL";
 import { redirect } from "next/navigation";
+import { getPlan } from "@/api/getPlan";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const data = await fetch(apiUrl + `/plans/${searchParams.planId}`)
-    .then((response) => {
-      if (!response.ok) throw new Error("API request failed");
-
-      return response.json();
-    })
-    .catch((error) => {
-      redirect("/error");
-    });
-
+  const data = await getPlan(searchParams.planId as string, redirect);
   return (
     <main>
       <div className="w-full min-w-full flex items-center justify-center">
@@ -30,7 +21,10 @@ export default async function Home({
             <Image src="/logo.png" fill alt="logo" />
           </div>
           <div className="flex flex-col w-full xl:flex-row gap-10 mt-10">
-            <Checkout amount={data.amount} />
+            <Checkout
+              amount={data.amount}
+              planId={searchParams.planId as string}
+            />
             <PaymentData data={data} />
           </div>
         </div>
