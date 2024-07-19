@@ -6,13 +6,17 @@ import Link from "next/link";
 import { PaymentData } from "@/components/PaymentData";
 import { redirect } from "next/navigation";
 import { getPlan } from "@/api/getPlan";
+import { verify } from "@/utils/jwt";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const data = await getPlan(searchParams.planId as string, redirect);
+  if (!searchParams.token) redirect("/404");
+  const { planId, customerId } = verify(searchParams.token as string);
+  if (!planId || !customerId) redirect("/404");
+  const data = await getPlan(planId);
   return (
     <main>
       <div className="w-full min-w-full flex items-center justify-center">
@@ -23,7 +27,8 @@ export default async function Home({
           <div className="flex flex-col w-full xl:flex-row gap-10 mt-10">
             <Checkout
               amount={data.amount}
-              planId={searchParams.planId as string}
+              customerId={customerId}
+              planId={planId}
             />
             <PaymentData data={data} />
           </div>

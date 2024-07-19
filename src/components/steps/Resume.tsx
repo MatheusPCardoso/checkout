@@ -1,34 +1,36 @@
-import { createCard } from "@/api/createCard";
+import { orderDto } from "@/dtos/orderDto";
 import { PageProps } from "@/dtos/stepsDto";
 import { PiNotePencil } from "react-icons/pi";
+import { createOrder } from "@/api/createOrder";
+import { useState } from "react";
+import { navigate } from "@/utils/navigate";
 
 export const ResumePage = ({
   setPage,
   checkoutValues,
   amount,
   planId,
-}: PageProps & { amount: number | undefined; planId: string }) => {
+  customerId,
+}: PageProps & {
+  amount: number | undefined;
+  planId: string;
+  customerId: string;
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const handleClick = async () => {
-    const creditCard = await createCard(
-      {
-        number: checkoutValues.cardNumber,
-        holder_name: checkoutValues.cardName,
-        holder_document: checkoutValues.document.replaceAll(/\D/g, ""),
-        exp_month: checkoutValues.cardDate[0] + checkoutValues.cardDate[1],
-        exp_year: checkoutValues.cardDate[3] + checkoutValues.cardDate[4],
-        cvv: checkoutValues.cardCVV,
-      },
-      "cus_2l9wLywCzotQxoNW"
-    );
-    console.log({ creditCard });
-    /*     const payload = {
+    setIsLoading(true);
+    const payload: orderDto = {
       creditCard: {
         card: {
-          number: checkoutValues.cardNumber,
+          number: checkoutValues.cardNumber.replaceAll(" ", ""),
           holder_name: checkoutValues.cardName,
-          holder_document: checkoutValues.document,
-          exp_month: checkoutValues.cardDate[0] + checkoutValues.cardDate[1],
-          exp_year: checkoutValues.cardDate[3] + checkoutValues.cardDate[4],
+          holder_document: checkoutValues.document.replace(/\D/g, ""),
+          exp_month: parseInt(
+            checkoutValues.cardDate[0] + checkoutValues.cardDate[1]
+          ),
+          exp_year: parseInt(
+            checkoutValues.cardDate[3] + checkoutValues.cardDate[4]
+          ),
           cvv: checkoutValues.cardCVV,
         },
       },
@@ -37,9 +39,13 @@ export const ResumePage = ({
         email: checkoutValues.email,
         code: "",
         phones: {
-          home_phone: checkoutValues.phone,
+          home_phone: {
+            country_code: "55",
+            number: checkoutValues.number,
+            area_code: `${checkoutValues.number[1]}${checkoutValues.number[2]}`,
+          },
         },
-        document: checkoutValues.document,
+        document: checkoutValues.document.replace(/\D/g, ""),
         type: checkoutValues.document.length < 15 ? "individual" : "company",
         address: {
           street: checkoutValues.street,
@@ -56,9 +62,16 @@ export const ResumePage = ({
         },
         metadata: {},
       },
-      jibotCustomerId: "", //pegar via parametro
+      jibotCustomerId: customerId.toString(),
       planId,
-    }; */
+    };
+    try {
+      await createOrder(payload);
+    } catch (error) {
+      navigate("/error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -150,8 +163,9 @@ export const ResumePage = ({
         </p>
       </div>
       <button
-        className="bg-teal-500 text-white p-3 rounded"
+        className="bg-teal-500 text-white p-3 rounded disabled:opacity-75"
         onClick={handleClick}
+        disabled={isLoading}
       >
         Confirmar -
         <span className="font-bold">

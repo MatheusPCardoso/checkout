@@ -11,9 +11,11 @@ import { ResumePage } from "./steps/Resume";
 export const Checkout = ({
   amount,
   planId,
+  customerId,
 }: {
   amount: number | undefined;
   planId: string;
+  customerId: string;
 }) => {
   const [page, setPage] = useState(0);
   const [checkoutValues, setCheckoutValues] = useState<CheckoutValues>({
@@ -81,6 +83,7 @@ export const Checkout = ({
           setCheckoutValues={setCheckoutValues}
           amount={amount}
           planId={planId}
+          customerId={customerId}
         />
       ),
       itemName: "Resumo",
