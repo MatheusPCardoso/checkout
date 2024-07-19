@@ -13,8 +13,10 @@ export default async function Home({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  if (!searchParams.token) redirect("/404");
   const { planId, customerId } = verify(searchParams.token as string);
-  const data = await getPlan(planId, redirect);
+  if (!planId || !customerId) redirect("/404");
+  const data = await getPlan(planId);
   return (
     <main>
       <div className="w-full min-w-full flex items-center justify-center">

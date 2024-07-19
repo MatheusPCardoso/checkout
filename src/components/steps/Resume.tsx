@@ -1,8 +1,9 @@
 import { orderDto } from "@/dtos/orderDto";
 import { PageProps } from "@/dtos/stepsDto";
 import { PiNotePencil } from "react-icons/pi";
-import { redirect } from "next/navigation";
 import { createOrder } from "@/api/createOrder";
+import { useState } from "react";
+import { navigate } from "@/utils/navigate";
 
 export const ResumePage = ({
   setPage,
@@ -15,7 +16,9 @@ export const ResumePage = ({
   planId: string;
   customerId: string;
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const handleClick = async () => {
+    setIsLoading(true);
     const payload: orderDto = {
       creditCard: {
         card: {
@@ -62,7 +65,13 @@ export const ResumePage = ({
       jibotCustomerId: customerId.toString(),
       planId,
     };
-    await createOrder(payload, redirect);
+    try {
+      await createOrder(payload);
+    } catch (error) {
+      navigate("/error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -154,8 +163,9 @@ export const ResumePage = ({
         </p>
       </div>
       <button
-        className="bg-teal-500 text-white p-3 rounded"
+        className="bg-teal-500 text-white p-3 rounded disabled:opacity-75"
         onClick={handleClick}
+        disabled={isLoading}
       >
         Confirmar -
         <span className="font-bold">

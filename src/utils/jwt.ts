@@ -12,5 +12,9 @@ export const generate = (data: TokenData): string => {
 };
 
 export const verify = (token: string): TokenData => {
-  return jwt.verify(token, secret || "") as TokenData;
+  try {
+    return jwt.verify(token, secret || "") as TokenData;
+  } catch {
+    return { planId: "", customerId: "" };
+  }
 };
