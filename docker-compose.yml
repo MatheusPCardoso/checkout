@@ -6,6 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    environment:
+      - NEXT_PUBLIC_JWT_SECRET=${NEXT_PUBLIC_JWT_SECRET}
+      - NEXT_PUBLIC_BASE_URL_QA=${NEXT_PUBLIC_BASE_URL_QA}
+      - NEXT_PUBLIC_QA=${NEXT_PUBLIC_QA}
     ports:
       - 3000:3000
     networks:
