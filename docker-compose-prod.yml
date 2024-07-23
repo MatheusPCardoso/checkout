@@ -1,0 +1,21 @@
+services:
+  checkout:
+    image: checkout-prod:latest
+    container_name: checkout_container_qa
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - NEXT_PUBLIC_JWT_SECRET=${NEXT_PUBLIC_JWT_SECRET}
+      - NEXT_PUBLIC_BASE_URL_PROD=${NEXT_PUBLIC_BASE_URL_PROD}
+      - NEXT_PUBLIC_PROD=${NEXT_PUBLIC_PROD}
+    ports:
+      - 3000:3000
+    networks:
+      - checkout-network
+
+networks:
+  checkout-network:
+    name: nginx-proxy-manager_default
+    external: true
