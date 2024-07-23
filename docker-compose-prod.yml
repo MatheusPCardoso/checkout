@@ -11,7 +11,7 @@ services:
       - NEXT_PUBLIC_BASE_URL_PROD=${NEXT_PUBLIC_BASE_URL_PROD}
       - NEXT_PUBLIC_PROD=${NEXT_PUBLIC_PROD}
     ports:
-      - 3000:3000
+      - 3004:3000
     networks:
       - checkout-network
 
