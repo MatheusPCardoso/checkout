@@ -33,7 +33,7 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /system/dev/checkout
+            cd /system/prod/checkout
             echo "NEXT_PUBLIC_BASE_URL_PROD=${{secrets.NEXT_PUBLIC_BASE_URL_PROD}}" >> .env
             echo "NEXT_PUBLIC_PROD=${{secrets.NEXT_PUBLIC_PROD}}" >> .env
             echo "NEXT_PUBLIC_JWT_SECRET=${{secrets.NEXT_PUBLIC_JWT_SECRET}}" >> .env
