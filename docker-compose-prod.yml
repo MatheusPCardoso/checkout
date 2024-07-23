@@ -1,7 +1,7 @@
 services:
   checkout:
     image: checkout-prod:latest
-    container_name: checkout_container_qa
+    container_name: checkout_container_prod
     build:
       context: .
       dockerfile: Dockerfile
