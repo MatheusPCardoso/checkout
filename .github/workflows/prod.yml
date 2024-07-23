@@ -1,15 +1,15 @@
-name: dev ci
+name: prod ci
 
 on:
   push:
     branches:
-      - develop
+      - main
   workflow_dispatch:
 
 jobs:
   deploy_dev:
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,9 +34,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /system/dev/checkout
-            echo "NEXT_PUBLIC_BASE_URL_QA=${{secrets.NEXT_PUBLIC_BASE_URL_QA}}" >> .env
-            echo "NEXT_PUBLIC_QA=${{secrets.NEXT_PUBLIC_QA}}" >> .env
+            echo "NEXT_PUBLIC_BASE_URL_PROD=${{secrets.NEXT_PUBLIC_BASE_URL_PROD}}" >> .env
+            echo "NEXT_PUBLIC_PROD=${{secrets.NEXT_PUBLIC_PROD}}" >> .env
             echo "NEXT_PUBLIC_JWT_SECRET=${{secrets.NEXT_PUBLIC_JWT_SECRET}}" >> .env
-            docker stop 'checkout_container_qa'
-            docker rm 'checkout_container_qa'
+            docker stop 'checkout_container_prod'
+            docker rm 'checkout_container_prod'
             docker compose up -d
