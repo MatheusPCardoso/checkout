@@ -39,4 +39,4 @@ jobs:
             echo "NEXT_PUBLIC_JWT_SECRET=${{secrets.NEXT_PUBLIC_JWT_SECRET}}" >> .env
             docker stop 'checkout_container_prod'
             docker rm 'checkout_container_prod'
-            docker compose up -d
+            docker compose -f docker-compose-prod.yml -p jibot-checkout-prod up -d
