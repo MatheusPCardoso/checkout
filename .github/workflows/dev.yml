@@ -39,4 +39,17 @@ jobs:
             echo "NEXT_PUBLIC_JWT_SECRET=${{secrets.NEXT_PUBLIC_JWT_SECRET}}" >> .env
             docker stop 'checkout_container_qa'
             docker rm 'checkout_container_qa'
+            sleep 10
+            docker image prune -a -f
             docker compose -f docker-compose-qa.yml -p jibot-checkout-qa up -d
+
+      - name: Remove files
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.REMOTE_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -rf cd /system/dev/checkout/*
+            rm -rf cd /system/dev/checkout/.[!.]*
